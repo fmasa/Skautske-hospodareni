@@ -1,0 +1,56 @@
+name: build
+
+on: [push, pull_request]
+
+jobs:
+    composer:
+        name: "Install PHP dependencies"
+        runs-on: ubuntu-18.04
+        container:
+            image: fmasa/lebeda:7.3-ci
+        steps:
+            - run: composer install
+
+    tests-unit:
+        name: "Run unit tests"
+        runs-on: ubuntu-18.04
+        container:
+            image: fmasa/lebeda:7.3-ci
+        needs: composer
+        steps:
+            - run: phing tests-unit
+
+    tests-integrations:
+        name: "Run integration tests"
+        runs-on: ubuntu-18.04
+        container:
+            image: fmasa/lebeda:7.3-ci
+        needs: composer
+
+        services:
+            mysql-test:
+                image: mysql:5.7
+                env:
+                    MYSQL_ROOT_PASSWORD: 'root'
+                    MYSQL_DATABASE: hskauting
+
+        steps:
+            - run: phing tests-integration
+
+    static-analysis:
+        name: "Run PHPStan analysis"
+        runs-on: ubuntu-18.04
+        container:
+            image: fmasa/lebeda:7.3-ci
+        needs: composer
+        steps:
+            - run: phing static-analysis
+
+    coding-standard:
+        name: "Check coding standard"
+        runs-on: ubuntu-18.04
+        container:
+            image: fmasa/lebeda:7.3-ci
+        needs: composer
+        steps:
+            - run: phing static-analysis
