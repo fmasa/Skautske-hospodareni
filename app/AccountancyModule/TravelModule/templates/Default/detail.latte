@@ -10,9 +10,9 @@
                 Upravit
             </a>
             <a n:href="removeCommand! $command->id" title="Smazat" class="btn btn-sm btn-danger" onclick="return confirm('Opravdu chcete smazat cestovní příkaz?')"><i class="glyphicon glyphicon-remove"></i> Smazat</a>
-            <a n:href="closeCommand! $command->id" class="btn btn-sm btn-warning" onclick="return confirm('Opravdu chcete uzavřít cestovní příaz?')"><i class="glyphicon glyphicon-folder-close"></i> Uzavřít</a>
+            <a n:href="closeCommand! $command->id" class="btn btn-sm btn-warning" onclick="return confirm('Opravdu chcete uzavřít cestovní příkaz?')"><i class="glyphicon glyphicon-folder-close"></i> Uzavřít</a>
             {else}
-            <a n:href="openCommand! $command->id"  class="btn btn-sm btn-success" onclick="return confirm('Opravdu chcete otevřít cestovní příaz?')"><i class="glyphicon glyphicon-folder-close"></i> Otevřít</a>
+            <a n:href="openCommand! $command->id"  class="btn btn-sm btn-success" onclick="return confirm('Opravdu chcete otevřít cestovní příkaz?')"><i class="glyphicon glyphicon-folder-close"></i> Otevřít</a>
             {/if}
             {if $command->passenger->contractId !== NULL}
                 <a n:href="Contract:detail $command->passenger->contractId" class="btn btn-sm btn-primary hidden-xs"><i class="glyphicon glyphicon-zoom-in"></i> Smlouva</a>
@@ -82,6 +82,7 @@
                 {if !empty($travels)}
                     <tr n:foreach="$travels as $t">
                         <td n:if="$isEditable" class='nowrap'>
+                            <a n:href="duplicateTravel! $command->id, $t->id" class="btn btn-xs btn-info" title="duplikovat cestu"><i class="glyphicon glyphicon-duplicate"></i></a>
                             <a n:href="editTravel! $t->id" class="ajax btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i></a>
                             <a n:href="removeTravel! $command->id, $t->id" class="btn btn-xs btn-danger" onclick="return confirm('Opravdu chcete smazat cestu?')" title="smazat cestu"><i class="glyphicon glyphicon-remove"></i></a>
                         </td>

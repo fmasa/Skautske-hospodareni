@@ -179,6 +179,19 @@ class DefaultPresenter extends BasePresenter
         $this->redirect('this');
     }
 
+    public function handleDuplicateTravel(int $commandId, int $travelId) : void
+    {
+        if (! $this->isCommandEditable($commandId)) {
+            $this->flashMessage('Nemáte oprávnění duplikovat cestu.', 'danger');
+            $this->redirect('default');
+        }
+
+        $this->travelService->duplicateTravel($commandId, $travelId);
+        $this->flashMessage('Cesta byla duplikována.');
+
+        $this->redirect('this');
+    }
+
     public function handleOpenCommand(int $commandId) : void
     {
         if (! $this->isCommandAccessible($commandId)) {
