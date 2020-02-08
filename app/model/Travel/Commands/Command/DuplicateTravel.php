@@ -17,9 +17,10 @@ final class DuplicateTravel
     /** @var int */
     private $travelId;
 
-    public function __construct(int $commandId, int $travelId) {
+    public function __construct(int $commandId, int $travelId)
+    {
         $this->commandId = $commandId;
-        $this->travelId = $travelId;
+        $this->travelId  = $travelId;
     }
 
     public function getCommandId() : int

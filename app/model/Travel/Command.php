@@ -269,7 +269,7 @@ class Command
 
         if ($travel instanceof VehicleTravel) {
             $this->addVehicleTravel($travel->getDistance(), $travel->getDetails());
-        } else if ($travel instanceof TransportTravel) {
+        } elseif ($travel instanceof TransportTravel) {
             $this->addTransportTravel($travel->getPrice(), $travel->getDetails());
         }
     }

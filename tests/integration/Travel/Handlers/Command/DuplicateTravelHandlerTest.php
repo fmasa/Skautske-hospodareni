@@ -12,6 +12,7 @@ use Model\Travel\Commands\Command\DuplicateTravel;
 use Model\Travel\Passenger;
 use Model\Travel\Repositories\ICommandRepository;
 use Money\Money;
+use function end;
 
 class DuplicateTravelHandlerTest extends CommandHandlerTest
 {
@@ -35,8 +36,9 @@ class DuplicateTravelHandlerTest extends CommandHandlerTest
 
     public function testTransportTravelIsDuplicated() : void
     {
-        $purpose = 'Cesta na střediskovku';
-        $command = new Command(1, null, null, $purpose, 'Brno', '', null, null, '', null, [], '');
+        $passenger = new Passenger('Frantisek Masa', '---', 'Brno');
+        $purpose   = 'Cesta na střediskovku';
+        $command   = new Command(1, null, $passenger, $purpose, 'Brno', '', null, null, '', null, [], '');
 
         $command->addTransportTravel(Money::CZK(100), new Command\TravelDetails(new Date('now'), 'letadlo', 'Praha', 'Brno'));
         $this->commands->save($command);
@@ -47,7 +49,7 @@ class DuplicateTravelHandlerTest extends CommandHandlerTest
 
         $duplicatedTravel = end($command->getTravels());
 
-        $travelDetails = $travel->getDetails();
+        $travelDetails           = $travel->getDetails();
         $duplicatedTravelDetails = $duplicatedTravel->getDetails();
 
         $this->assertEquals($travelDetails->getDate(), $duplicatedTravelDetails->getDate());
@@ -58,11 +60,9 @@ class DuplicateTravelHandlerTest extends CommandHandlerTest
 
     public function testVehicleTravelIsDuplicated() : void
     {
-        $vehicle = $this->mockVehicle();
-        $vehicle->shouldReceive('getId')->andReturn(6);
-        $driver  = new Passenger('Frantisek Masa', '---', 'Brno');
-        $purpose = 'Cesta na střediskovku';
-        $command = new Command(2, $vehicle, $driver, $purpose, 'Brno', '', Money::CZK(3120), Money::CZK(500), '', null, [], '');
+        $passenger = new Passenger('Frantisek Masa', '---', 'Brno');
+        $purpose   = 'Cesta na střediskovku';
+        $command   = new Command(1, null, $passenger, $purpose, 'Brno', '', Money::CZK(3120), Money::CZK(500), '', null, [], '');
 
         $command->addVehicleTravel(123, new Command\TravelDetails(new Date('now'), 'auto vlastní', 'Praha', 'Brno'));
         $this->commands->save($command);
@@ -73,7 +73,7 @@ class DuplicateTravelHandlerTest extends CommandHandlerTest
 
         $duplicatedTravel = end($command->getTravels());
 
-        $travelDetails = $travel->getDetails();
+        $travelDetails           = $travel->getDetails();
         $duplicatedTravelDetails = $duplicatedTravel->getDetails();
 
         $this->assertEquals($travelDetails->getDate(), $duplicatedTravelDetails->getDate());
