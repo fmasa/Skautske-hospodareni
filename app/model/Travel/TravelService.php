@@ -183,22 +183,6 @@ class TravelService
         $this->commands->save($command);
     }
 
-    public function duplicateTravel(int $commandId, int $travelId) : void
-    {
-        $command       = $this->commands->find($commandId);
-        $travel        = $this->getTravel($commandId, $travelId);
-        $details       = $travel->getDetails();
-        $transportType = $this->types->find($details->getTransportType());
-
-        if ($transportType->hasFuel()) {
-            $command->addVehicleTravel($travel->getDistance(), $details);
-        } else {
-            $command->addTransportTravel($travel->getPrice(), $details);
-        }
-
-        $this->commands->save($command);
-    }
-
     public function updateTravel(
         int $commandId,
         int $travelId,

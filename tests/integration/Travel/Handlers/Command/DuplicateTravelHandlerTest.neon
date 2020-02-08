@@ -1,0 +1,9 @@
+
+services:
+    - Model\Infrastructure\Repositories\Travel\CommandRepository
+
+    - class: Model\Travel\Handlers\Command\DuplicateTravelHandler
+      tags: [commandBus.handler]
+
+includes:
+    - ../../../config/doctrine.neon

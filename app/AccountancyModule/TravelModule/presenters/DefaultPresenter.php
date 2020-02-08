@@ -13,6 +13,7 @@ use Assert\Assertion;
 use Model\BaseService;
 use Model\DTO\Travel\TravelType;
 use Model\Services\PdfRenderer;
+use Model\Travel\Commands\Command\DuplicateTravel;
 use Model\TravelService;
 use Nette\Application\BadRequestException;
 use Nette\Application\UI\Form;
@@ -186,7 +187,8 @@ class DefaultPresenter extends BasePresenter
             $this->redirect('default');
         }
 
-        $this->travelService->duplicateTravel($commandId, $travelId);
+        $this->commandBus->handle(new DuplicateTravel($commandId, $travelId));
+
         $this->flashMessage('Cesta byla duplikována.');
 
         $this->redirect('this');

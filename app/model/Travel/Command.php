@@ -260,6 +260,20 @@ class Command
         $travel->update($price, $details);
     }
 
+    /**
+     * @throws TravelNotFound
+     */
+    public function duplicateTravel(int $id) : void
+    {
+        $travel = $this->getTravel($id);
+
+        if ($travel instanceof VehicleTravel) {
+            $this->addVehicleTravel($travel->getDistance(), $travel->getDetails());
+        } else if ($travel instanceof TransportTravel) {
+            $this->addTransportTravel($travel->getPrice(), $travel->getDetails());
+        }
+    }
+
     public function removeTravel(int $id) : void
     {
         $this->travels->remove($id);
