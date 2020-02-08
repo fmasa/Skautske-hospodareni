@@ -38,20 +38,23 @@ class DuplicateTravelHandlerTest extends CommandHandlerTest
     {
         $passenger = new Passenger('Frantisek Masa', '---', 'Brno');
         $purpose   = 'Cesta na střediskovku';
-        $command   = new Command(1, null, $passenger, $purpose, 'Brno', '', null, null, '', null, [], '');
+        $command   = new Command(1, null, $passenger, $purpose, 'Brno', '', Money::CZK(0), Money::CZK(0), '', null, [], '');
 
-        $command->addTransportTravel(Money::CZK(100), new Command\TravelDetails(new Date('now'), 'letadlo', 'Praha', 'Brno'));
+        $command->addTransportTravel(Money::CZK(100), new Command\TravelDetails(new Date('now'), 'a', 'Praha', 'Brno'));
         $this->commands->save($command);
 
-        $travel = end($command->getTravels());
+        $travels = $command->getTravels();
+        $travel  = end($travels);
 
         $this->commandBus->handle(new DuplicateTravel($command->getId(), $travel->getId()));
 
-        $duplicatedTravel = end($command->getTravels());
+        $travels          = $command->getTravels();
+        $duplicatedTravel = end($travels);
 
         $travelDetails           = $travel->getDetails();
         $duplicatedTravelDetails = $duplicatedTravel->getDetails();
 
+        $this->assertNotEquals($travel->getId(), $duplicatedTravel->getId());
         $this->assertEquals($travelDetails->getDate(), $duplicatedTravelDetails->getDate());
         $this->assertEquals($travelDetails->getTransportType(), $duplicatedTravelDetails->getTransportType());
         $this->assertEquals($travelDetails->getStartPlace(), $duplicatedTravelDetails->getStartPlace());
@@ -64,18 +67,21 @@ class DuplicateTravelHandlerTest extends CommandHandlerTest
         $purpose   = 'Cesta na střediskovku';
         $command   = new Command(1, null, $passenger, $purpose, 'Brno', '', Money::CZK(3120), Money::CZK(500), '', null, [], '');
 
-        $command->addVehicleTravel(123, new Command\TravelDetails(new Date('now'), 'auto vlastní', 'Praha', 'Brno'));
+        $command->addVehicleTravel(123, new Command\TravelDetails(new Date('now'), 'auv', 'Praha', 'Brno'));
         $this->commands->save($command);
 
-        $travel = end($command->getTravels());
+        $travels = $command->getTravels();
+        $travel  = end($travels);
 
         $this->commandBus->handle(new DuplicateTravel($command->getId(), $travel->getId()));
 
-        $duplicatedTravel = end($command->getTravels());
+        $travels          = $command->getTravels();
+        $duplicatedTravel = end($travels);
 
         $travelDetails           = $travel->getDetails();
         $duplicatedTravelDetails = $duplicatedTravel->getDetails();
 
+        $this->assertNotEquals($travel->getId(), $duplicatedTravel->getId());
         $this->assertEquals($travelDetails->getDate(), $duplicatedTravelDetails->getDate());
         $this->assertEquals($travelDetails->getTransportType(), $duplicatedTravelDetails->getTransportType());
         $this->assertEquals($travelDetails->getStartPlace(), $duplicatedTravelDetails->getStartPlace());
