@@ -6,9 +6,11 @@ namespace Model\Travel\Handlers\Command;
 
 use Cake\Chronos\Date;
 use Codeception\Test\Unit;
+use Mockery as m;
 use Model\Travel\Command;
 use Model\Travel\Commands\Command\DuplicateTravel;
 use Model\Travel\Passenger;
+use Model\Travel\Repositories\ICommandRepository;
 use Money\Money;
 use function end;
 
@@ -25,7 +27,9 @@ class DuplicateTravelHandlerTest extends Unit
         $travels = $command->getTravels();
         $travel  = end($travels);
 
-        $this->commandBus->handle(new DuplicateTravel($command->getId(), $travel->getId()));
+        $repository = m::mock(ICommandRepository::class);
+        $handler    = new DuplicateTravelHandler($repository);
+        $handler(new DuplicateTravel($command->getId(), $travel->getId()));
 
         $travels          = $command->getTravels();
         $duplicatedTravel = end($travels);
@@ -51,7 +55,9 @@ class DuplicateTravelHandlerTest extends Unit
         $travels = $command->getTravels();
         $travel  = end($travels);
 
-        $this->commandBus->handle(new DuplicateTravel($command->getId(), $travel->getId()));
+        $repository = m::mock(ICommandRepository::class);
+        $handler    = new DuplicateTravelHandler($repository);
+        $handler(new DuplicateTravel($command->getId(), $travel->getId()));
 
         $travels          = $command->getTravels();
         $duplicatedTravel = end($travels);
