@@ -189,7 +189,7 @@ class DefaultPresenter extends BasePresenter
 
         $this->commandBus->handle(new DuplicateTravel($commandId, $travelId));
 
-        $this->flashMessage('Cesta byla duplikována.');
+        $this->flashMessage('Cesta byla duplikována.', 'success');
 
         $this->redirect('this');
     }
