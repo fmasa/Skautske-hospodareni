@@ -10,30 +10,11 @@ use Model\Travel\Command;
 use Model\Travel\Command\Travel;
 use Model\Travel\Commands\Command\DuplicateTravel;
 use Model\Travel\Passenger;
-use Model\Travel\Repositories\ICommandRepository;
 use Money\Money;
 use function end;
 
 class DuplicateTravelHandlerTest extends CommandHandlerTest
 {
-    /** @var ICommandRepository */
-    private $commands;
-
-    public function _before() : void
-    {
-        $this->tester->useConfigFiles(['Travel/Handlers/Command/DuplicateTravelHandlerTest.neon']);
-        $this->commands = $this->tester->grabService(ICommandRepository::class);
-        parent::_before();
-    }
-
-    /**
-     * @return string[]
-     */
-    public function getTestedAggregateRoots() : array
-    {
-        return [Travel::class];
-    }
-
     public function testTransportTravelIsDuplicated() : void
     {
         $passenger = new Passenger('Frantisek Masa', '---', 'Brno');
@@ -41,7 +22,6 @@ class DuplicateTravelHandlerTest extends CommandHandlerTest
         $command   = new Command(1, null, $passenger, $purpose, 'Brno', '', Money::CZK(0), Money::CZK(0), '', null, [], '');
 
         $command->addTransportTravel(Money::CZK(100), new Command\TravelDetails(new Date('now'), 'a', 'Praha', 'Brno'));
-        $this->commands->save($command);
 
         $travels = $command->getTravels();
         $travel  = end($travels);
@@ -68,7 +48,6 @@ class DuplicateTravelHandlerTest extends CommandHandlerTest
         $command   = new Command(1, null, $passenger, $purpose, 'Brno', '', Money::CZK(3120), Money::CZK(500), '', null, [], '');
 
         $command->addVehicleTravel(123, new Command\TravelDetails(new Date('now'), 'auv', 'Praha', 'Brno'));
-        $this->commands->save($command);
 
         $travels = $command->getTravels();
         $travel  = end($travels);

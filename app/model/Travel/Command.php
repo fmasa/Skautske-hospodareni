@@ -7,6 +7,7 @@ namespace Model\Travel;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Model\Common\ShouldNotHappen;
 use Model\Travel\Command\TransportTravel;
 use Model\Travel\Command\Travel;
 use Model\Travel\Command\TravelDetails;
@@ -272,7 +273,7 @@ class Command
         } elseif ($travel instanceof TransportTravel) {
             $this->addTransportTravel($travel->getPrice(), $travel->getDetails());
         } else {
-            throw new \Model\ShouldNotHappen('Uknown travel type');
+            throw new ShouldNotHappen('Uknown travel type');
         }
     }
 
