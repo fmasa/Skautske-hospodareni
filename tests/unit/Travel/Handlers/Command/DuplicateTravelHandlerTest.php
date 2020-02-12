@@ -5,15 +5,14 @@ declare(strict_types=1);
 namespace Model\Travel\Handlers\Command;
 
 use Cake\Chronos\Date;
-use CommandHandlerTest;
+use Codeception\Test\Unit;
 use Model\Travel\Command;
-use Model\Travel\Command\Travel;
 use Model\Travel\Commands\Command\DuplicateTravel;
 use Model\Travel\Passenger;
 use Money\Money;
 use function end;
 
-class DuplicateTravelHandlerTest extends CommandHandlerTest
+class DuplicateTravelHandlerTest extends Unit
 {
     public function testTransportTravelIsDuplicated() : void
     {
