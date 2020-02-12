@@ -271,6 +271,8 @@ class Command
             $this->addVehicleTravel($travel->getDistance(), $travel->getDetails());
         } elseif ($travel instanceof TransportTravel) {
             $this->addTransportTravel($travel->getPrice(), $travel->getDetails());
+        } else {
+            throw new \Model\ShouldNotHappen('Uknown travel type');
         }
     }
 
