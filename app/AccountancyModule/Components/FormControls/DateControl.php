@@ -76,7 +76,6 @@ class DateControl extends BaseControl
         }
 
         $control->setAttribute('autocomplete', 'off');
-        $control->setAttribute('type', 'date');
         $control->setAttribute('class', 'form-control date');
 
         return $control;
