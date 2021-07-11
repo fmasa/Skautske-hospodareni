@@ -54,7 +54,7 @@ class DateControl extends BaseControl
     {
         $value = parent::getValue();
 
-        if ($value === null) {
+        if ($value === null || $value === '') {
             return null;
         }
 
@@ -62,7 +62,7 @@ class DateControl extends BaseControl
             return $value;
         }
 
-        return Date::createFromFormat('d.m.Y', str_replace(' ', '', $value));
+        return Date::createFromFormat(self::DATE_FORMAT, str_replace(' ', '', $value));
     }
 
     public function getControl(): Html
