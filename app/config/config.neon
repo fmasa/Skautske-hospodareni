@@ -28,6 +28,8 @@ tracy:
 console:
     url: https://h.skauting.cz
     helperSet: Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet()
+    helpers:
+        question: Symfony\Component\Console\Helper\QuestionHelper()
 
 messageBus:
     commandBus:
