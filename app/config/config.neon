@@ -27,6 +27,7 @@ tracy:
 
 console:
     url: https://h.skauting.cz
+    helperSet: Doctrine\ORM\Tools\Console\ConsoleRunner::createHelperSet()
 
 messageBus:
     commandBus:

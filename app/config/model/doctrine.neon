@@ -72,9 +72,6 @@ dbal:
 services:
     - Model\Infrastructure\EntityManagerFactory(%debugMode%, %tempDir%)
     - @Model\Infrastructure\EntityManagerFactory::create()
-    - factory: Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper
-      tags: { kdyby.console.helper: em }
-
 
     - factory: Doctrine\ORM\Tools\Console\Command\GenerateProxiesCommand
       tags: { console.command: orm:generate-proxies }
